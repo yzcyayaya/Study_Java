@@ -1,0 +1,31 @@
+/*
+ * 时间：2019年10月15;
+ * 在eclipse 2019 jdk1.8中运行结果是true；
+ * */
+public class A{
+	public static void main(String[] args)
+	{
+		B b1 = new B(2);
+		B b2 = new B(2);
+		
+		System.out.println(b1.equals(b2));
+	}
+}
+class B{
+	public int i;
+	public B(int i){
+		this.i = i;
+	}
+	public boolean equals(Object obj)//obj = b2;
+	{
+		B aa = (B)obj; //强制转换，然后用一个引用来保存
+		if(this.i == aa.i) //aa.i = b2.i; 
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+}
