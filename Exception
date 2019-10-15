@@ -1,1 +1,25 @@
+/*
+ * 
+ * 时间：2019年10月15日;
+ * 在eclipse 2019 jdk1.8中输入符号运行结果是输入类型为非法；
+ * 
+ */
+import java.util.Scanner;
+public class TestException{
+	public static void main(String[] args)
+	{
+		int i;
+		Scanner sc = new Scanner(System.in);
+		//i = sc.nextInt();                //如果我直接输入一个非整形，则会报出异常Exception in thread "main" java.util.InputMismatchException
+		//System.out.println("i = " + i);
+		try {								//捕捉异常
+			i = sc.nextInt();
+			System.out.println("i = " + i);
+		}
+		catch(Exception e)                  //处理异常
+		{
+			System.out.println("输入的类型为非法类型");
+		}
+	}
+}
 
