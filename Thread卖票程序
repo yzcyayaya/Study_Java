@@ -1,0 +1,36 @@
+class A implements Runnable{
+	public int tickets = 100;
+	public String str = new String("hh");
+	public void run()
+	{
+		while(true)
+		{
+			synchronized(str)
+			{
+				if(tickets > 0)
+				{
+					System.out.printf("%s站点正在卖第%d张票", 
+						Thread.currentThread().getName(), tickets);
+					--tickets;
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+	}
+}
+public class TestTickets_1
+{
+	public static void main(String[] args)
+	{
+		A aa = new A();
+		Thread t1 = new Thread(aa);
+		t1.setName("北京站");
+		t1.start();
+		Thread t2 = new Thread(aa);
+		t2.setName("上海站");	
+		t2.start();
+	}
+}
