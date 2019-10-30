@@ -1,0 +1,98 @@
+/*
+	本程序讲述了生产与消费， 如何让它们进行同步，使用线程来编写；
+	在jdk11上运行结果平稳；
+	时间：2019年10月30日11:46:32；
+*/
+class Caozuo{
+	private char[] data = new char[6];
+	private int cnt = 0;
+	public synchronized void push(char ch) //定义生产过程
+	{
+		while(cnt == data.length)
+		{
+			try{
+				this.wait();		//这个暂停线程会抛出异常
+			}
+			catch(Exception e){
+
+			}
+		}
+			this.notify();
+			data[cnt] = ch;
+			++cnt;
+			System.out.printf("生产线程正在生产第%d个线程， 该产品是：%s\n", cnt, ch);
+	}
+	public synchronized char pop()//定义消费过程
+	{
+		char ch;
+		while(cnt == 0)
+		{
+			try{
+				this.wait();
+			}
+			catch(Exception e){
+
+			}
+		}
+			this.notify();
+			ch = data[cnt-1];
+			System.out.printf("消费线程正在消费第%d个线程， 该产品是：%s\n", cnt, ch);
+			--cnt;
+			return ch;
+	}
+}
+class Producer implements Runnable{
+	private Caozuo cc = null; //由于不能直接调用其他类中的方法，所以要定义一个字段来获取其他方法的对象；
+	public Producer(Caozuo cc) {
+		this.cc = cc;
+	}
+	public void run() //throws Exception 错误， 因为接口的run方法没有抛出异常，强行抛出会导致不能进行多态，本语句错误！
+	{
+		char ch;
+		for(int i=0; i<20; i++)
+		{
+			try{
+				Thread.sleep(100);
+			}
+			catch(Exception e){
+
+			}
+			ch = (char)('a' + i);
+			cc.push(ch);
+		}
+	}
+}
+class Consumer implements Runnable{
+	private Caozuo cc = null;
+	public Consumer(Caozuo cc)
+	{
+		this.cc = cc;
+	}
+	public void run()
+	{
+		for(int i=0; i<20; ++i)
+		{
+			try{
+				Thread.sleep(100);//这个方法会抛出异常；
+			}
+			catch(Exception e){
+
+			}
+			cc.pop();
+		}
+	}
+}
+public class TestPC_1{
+	public static void main(String[] args)
+	{
+		Caozuo cc = new Caozuo();
+		Producer p = new Producer(cc);
+		Consumer c = new Consumer(cc);
+		//System.out.println("AAA");
+
+		Thread t1 = new Thread(p);
+		t1.start();
+		Thread t2 = new Thread(c);
+		t2.start();
+	}
+}
