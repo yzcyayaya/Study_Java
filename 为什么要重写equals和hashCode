@@ -1,0 +1,62 @@
+/*
+ *此程序在eclipse2019中运行结果是： 
+ * 不相等！
+ * 相等！
+ * [haha, 1, 2, 66.66]//本程序证明了如果想让HashSet容器能够不保存重复的对象，必须重写equals方法和hashSet方法
+ */
+package com.vessel.test;
+
+import java.util.*;
+class A{
+	private int i;
+	public A(int i)
+	{
+		this.i = i;
+	}
+	public String toString() //重写toString方法，默认的方法的值是对象的名字以及地址
+	{
+		return "haha";
+	}
+	public boolean equals(Object ob)//重写equals方法 因为默认的是比较是不是同一块内存
+	{
+		A aa = (A)ob;
+		return this.i == aa.i;
+	}
+	public int hashCode()//重写hashSet方法，因为默认的一个不同的地址的返回的哈希码
+	{
+		return i;
+	}
+}
+public class TestHashSet {
+
+	public static void main(String[] args)
+	{
+		HashSet hs = new HashSet();
+		A a1 = new A(100);
+		A a2 = new A(100);
+		A a3 = new A(100);
+		if(a1 == a2)//比较对象引用的地址
+		{
+			System.out.println("相等!");
+		}
+		else
+		{
+			System.out.println("不相等！");
+		}
+		if(a1.equals(a2))//比较重写的equals方法
+		{
+			System.out.println("相等!");
+		}
+		else
+		{
+			System.out.println("不相等！");
+		}
+		hs.add(a1);
+		hs.add(a2);
+		hs.add(a3);//如果没有重写这三个都会输出，重写之后调用一个；
+		hs.add(1);
+		hs.add(2);
+		hs.add(66.66);
+		System.out.println(hs);
+	}
+}
