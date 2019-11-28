@@ -1,0 +1,64 @@
+package refiect;
+
+import java.lang.reflect.*;
+import java.lang.reflect.Field.*;
+
+public class Testclass{
+    private int age;
+    private String name;
+    public  float sno;
+
+    public Testclass()
+    {
+
+    }
+    public void test()
+    {
+        System.out.println("Testclass---------");
+    }
+    public Testclass(int age)
+    {
+        System.out.println(age);
+    }
+    private Testclass(float f)
+    {
+        System.out.println(f);
+    }
+    @Override
+    public String toString() {
+        return "我在学反射";
+    }
+
+    public static  void main(String[] args) throws Exception
+    {
+        Class<Testclass> a = Testclass.class;
+//        Field[] fd = a.getFields();
+//        Field[] fld = a.getDeclaredFields();
+        Testclass tc = new Testclass();
+
+        Field[] fd = a.getDeclaredFields();
+
+        Field fld = a.getDeclaredField("age");
+        fld.set(tc, 20);
+        Object obj = fld.get(tc);
+        System.out.println(obj);
+        System.out.println(tc.age);
+//        Constructor[] ctr = a.getConstructors();
+//        Constructor[] ctor = a.getDeclaredConstructors();
+//        for(Field f : fld)
+//        {
+//            f.setAccessible(true);
+//            System.out.println(f);
+//        }
+//        for(Constructor c : ctr)
+//        {
+//            System.out.println(c);
+//        }
+//        for(Constructor c : ctor)
+//        {
+//            c.setAccessible(true);
+//            System.out.println(c);
+//        }
+    }
+
+}
