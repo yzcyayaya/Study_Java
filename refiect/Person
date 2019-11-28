@@ -1,0 +1,34 @@
+/*
+    在idea2019上
+    本程序使用反射组成一个类似”框架“
+    只需要改动配置文件就可以修改使用类和对应的方法
+        要求掌握！！！
+    2019年11月26日14:41:03
+
+ */
+package refiect;
+
+import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.util.Properties;
+
+public class Person {
+    public static void main(String[] args)throws Exception
+    {
+        Properties pro = new Properties();
+        ClassLoader classLoader = Student.class.getClassLoader();
+        InputStream is = classLoader.getResourceAsStream("por.properties");
+        pro.load(is);
+
+        String className = pro.getProperty("className");
+        String methodName = pro.getProperty("methodName");
+
+       Class cls = Class.forName(className);
+
+       Object obj = cls.getDeclaredConstructor().newInstance();
+
+       Method mt = cls.getMethod(methodName);
+
+       mt.invoke(obj);
+    }
+}
