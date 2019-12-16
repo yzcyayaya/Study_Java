@@ -1,0 +1,49 @@
+package cn.yzc.jdbc;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class JDBCinsert {
+    public static void main(String[] args){
+        Statement sten = null;
+        Connection coen = null;
+        try{
+            String sql = "update student set sname='颜志成',ssex =  '男',sage = 30, sgrade = '大二' where sno = '1851100127'";
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            coen = DriverManager.getConnection("jdbc:mysql://localhost:3306/school?useUnicode=true&characterEncoding=utf8","root", "000000");
+            sten = coen.createStatement();
+            int hanshu =  sten.executeUpdate(sql);
+            if(hanshu > 0)
+            {
+                System.out.println("添加成功！");
+            }
+            else
+            {
+                System.out.println("添加失败!");
+            }
+        }
+        catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            if (sten != null) {
+                try {
+                    sten.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (coen != null) {
+                try {
+                    coen.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
